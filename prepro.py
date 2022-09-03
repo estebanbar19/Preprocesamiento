@@ -1,8 +1,4 @@
-from sys import flags
-import nltk
 from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
-import string
 import pandas
 
 def preprocesamiento():
@@ -35,16 +31,9 @@ def preprocesamiento():
     tweets.iloc[:,10].replace("[0-9]+", "", regex=True, inplace=True)
 
     #Remover stopwords
-    aux = tweets.iloc[:,10].lower()
-    out = ''.join([i for i in aux if i not in string.punctuation])
     stop_words = set(stopwords.words('spanish'))
-    word_tokens = word_tokenize(out)
-    out1 = ""
-    for w in word_tokens:
-        if w not in stop_words:
-            out1 += w +" "
-    out1 = out1.strip()
-    tweets.iloc[:,10] = out1
+    for i in stop_words:
+        tweets.iloc[:,10].replace(to_replace=r'\s'+i+'\s', value= " ", regex=True, inplace=True)
 
     #Guardando los cambios los cambios
     tweets.to_csv("preprocesamiento.csv")
